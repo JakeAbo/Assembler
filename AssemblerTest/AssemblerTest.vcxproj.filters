@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>GoogleTestMain</Filter>
+    </ClCompile>
+    <ClCompile Include="WordTester.cpp">
+      <Filter>TestModules</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandTester.cpp">
+      <Filter>TestModules</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GoogleTestMain">
+      <UniqueIdentifier>{a8d3fa37-84d4-4c4f-8afb-b7b9af43a5dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestModules">
+      <UniqueIdentifier>{e373c4fe-ee24-4da2-9c39-c001c4badfc5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>GoogleTestMain</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
