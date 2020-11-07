@@ -14,6 +14,7 @@ namespace Assembler
 		static constexpr auto OP_CODE_SIZE = 4;
 		static constexpr auto OPERNAD_LBA_SIZE = 3;
 		static constexpr auto REGISTER_SIZE = 5;
+		static constexpr auto BASE64_CHAR_SIZE = 6;
 
 		/* First Word */
 		static constexpr auto CODE_TYPE_0 = 0;

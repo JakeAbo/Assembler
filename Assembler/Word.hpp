@@ -29,6 +29,20 @@ namespace Assembler
 			return _bits.to_string();
 		}
 
+		const std::string getWordBase64()
+		{
+			static std::bitset<AssemblerTypes::WORD_SIZE> divider(0b000000111111);
+			static constexpr auto base64Map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+			std::string res;
+			std::bitset<AssemblerTypes::WORD_SIZE> copyBits(_bits);
+
+			res.push_back(base64Map[((copyBits >> AssemblerTypes::BASE64_CHAR_SIZE)& divider).to_ulong()]);
+			res.push_back(base64Map[(copyBits & divider).to_ulong()]);
+
+			return res;
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const Word& word) 
 		{
 			os << word._bits.to_string();

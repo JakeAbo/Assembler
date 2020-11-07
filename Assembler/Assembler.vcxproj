@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="AssemblerExceptions.hpp" />
     <ClInclude Include="AssemblerTypes.hpp" />
+    <ClInclude Include="Base64Encoder.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="Word.hpp" />
   </ItemGroup>

@@ -348,5 +348,20 @@ namespace Tester
 
 			EXPECT_EQ(w.getBinaryString(), "101001010110");
 		}
+
+		/* BASE64 Encoder Tests */
+		TEST(Base64EncoderCommand1, Base64Encoder)
+		{
+			w.clear().setRelocatable().setDestinationDirectRegister().setOpCodeAdd().setSourceDirectRegister();
+
+			EXPECT_EQ(w.getWordBase64(), "pW");
+		}
+
+		TEST(Base64EncoderCommand2, Base64Encoder)
+		{
+			w.clear().setAbsolute().setDestinationImmediate().setOpCodeMov().setSourceDirect();
+
+			EXPECT_EQ(w.getWordBase64(), "YE");
+		}
 	}
 }
