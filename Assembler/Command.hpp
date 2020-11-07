@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Word.hpp"
+#include "AssemblerStreams.hpp"
 
 namespace Assembler
 {
@@ -32,7 +33,7 @@ namespace Assembler
 			_words.insert(_words.end(), words);
 		}
 
-		friend std::ostream& operator<<(std::ostream& os, const Command& cmd)
+		friend BinaryStream& operator<<(BinaryStream& os, const Command& cmd)
 		{
 			for (const auto& word : cmd._words)
 			{
@@ -42,9 +43,28 @@ namespace Assembler
 			return os;
 		}
 
-		const std::string getBinaryCommand()
+		friend Base64Stream& operator<<(Base64Stream& os, const Command& cmd)
 		{
-			std::ostringstream os;
+			for (const auto& word : cmd._words)
+			{
+				os << word << std::endl;
+			}
+
+			return os;
+		}
+
+		const std::string getBinaryCommand() const
+		{
+			BinaryStream os;
+
+			os << *this;
+
+			return os.str();
+		}
+
+		const std::string getBase64Command() const
+		{
+			Base64Stream os;
 
 			os << *this;
 

@@ -5,6 +5,7 @@
 
 #include "AssemblerTypes.hpp"
 #include "AssemblerExceptions.hpp"
+#include "AssemblerStreams.hpp"
 
 namespace Assembler
 {
@@ -24,12 +25,12 @@ namespace Assembler
 			return *this;
 		}
 
-		const std::string getBinaryString()
+		const std::string getBinaryString() const 
 		{
 			return _bits.to_string();
 		}
 
-		const std::string getWordBase64()
+		const std::string getWordBase64() const
 		{
 			static std::bitset<AssemblerTypes::WORD_SIZE> divider(0b000000111111);
 			static constexpr auto base64Map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -43,9 +44,15 @@ namespace Assembler
 			return res;
 		}
 
-		friend std::ostream& operator<<(std::ostream& os, const Word& word) 
+		friend BinaryStream& operator<<(BinaryStream& os, const Word& word)
 		{
-			os << word._bits.to_string();
+			os << word.getBinaryString();
+			return os;
+		}
+
+		friend Base64Stream& operator<<(Base64Stream& os, const Word& word)
+		{
+			os << word.getWordBase64();
 			return os;
 		}
 

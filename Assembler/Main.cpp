@@ -4,16 +4,14 @@
 #include "Word.hpp"
 #include "AssemblerExceptions.hpp"
 
+#include "AssemblerStreams.hpp"
+
 int main()
 {
-	try 
-	{
-		throw Assembler::AssemblerExceptionOverflow();
-	}
-	catch (const Assembler::AssemblerException& ex)
-	{
-		std::cout << ex.what() << std::endl;
-	}
+	Assembler::BinaryStream os;
+
+	os << "sss";
+
 
 
 }
