@@ -128,10 +128,13 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsmFileReader.hpp" />
     <ClInclude Include="AssemblerExceptions.hpp" />
     <ClInclude Include="AssemblerStreams.hpp" />
     <ClInclude Include="AssemblerTypes.hpp" />
     <ClInclude Include="Command.hpp" />
+    <ClInclude Include="Statment.hpp" />
+    <ClInclude Include="StringUtility.hpp" />
     <ClInclude Include="Word.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

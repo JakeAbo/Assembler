@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <sstream>
+#include <string>
 
 #include "Word.hpp"
 #include "AssemblerStreams.hpp"

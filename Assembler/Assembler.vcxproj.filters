@@ -35,5 +35,14 @@
     <ClInclude Include="AssemblerStreams.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AsmFileReader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Statment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
