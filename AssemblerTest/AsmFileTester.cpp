@@ -5,18 +5,20 @@ namespace Tester
 {
 	namespace AsmFile
 	{
-		
 		TEST(CantOpenFile, AsmFileModule)
 		{
-			try
-			{
-				Assembler::AsmFileReader file("\\dir\\doesntexist");
-				file.openFile();
-			}
-			catch (const Assembler::AssemblerException& ex)
-			{
-				EXPECT_EQ(ex.what(), std::string("Assembler unable to open .asm file"));
-			}
+			Assembler::AsmFileReader file("\\dir\\doesntexist");
+			file.openFile();
+
+			EXPECT_EQ(file.getException().value(), std::string("Assembler unable to open .asm file"));
+		}
+
+		TEST(CantCompileUnopenFile, AsmFileModule)
+		{
+			Assembler::AsmFileReader file("\\dir\\doesntexist");
+			file.compileFile();
+
+			EXPECT_EQ(file.getException().value(), std::string("Assembler unable to open .asm file"));
 		}
 	}
 }

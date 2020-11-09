@@ -14,6 +14,7 @@ namespace Assembler
 		std::string _asmStmt;
 		Command _cmd;
 		std::optional<std::string> _symbol;
+		std::optional<std::string> _exception;
 
 		bool isEmptyStmt(size_t len)
 		{
@@ -27,25 +28,38 @@ namespace Assembler
 
 		bool isSavedWord(const std::string& token)
 		{
-			return (!AssemblerTypes::getRegister(token).has_value() && 
-				!AssemblerTypes::getOpCode(token).has_value());
+			return (AssemblerTypes::checkIfSavedReg(token).has_value() || 
+				AssemblerTypes::getOpCode(token).has_value());
 		}
 
 		void checkForLabel(const std::vector<std::string>& tokens)
 		{
+			bool flag = true;
+
 			std::ostringstream os;
 
 			os << tokens[0];
 
-			if (tokens[0][tokens[0].length() - 1] != ':')
+			if (tokens[0][tokens[0].length() - 1] != ':' && tokens.size() > 1)
 			{
 				os << tokens[1][0];
 			}
 
 			std::regex reg(StringUtility::REGEX_SYMBOL_VALIDATE);
-			if (std::regex_match(os.str(), reg) && isSavedWord(os.str()))
+			if (std::regex_match(os.str(), reg))
 			{
-				_symbol = os.str();
+				std::string labelWithoutColon = os.str();
+				labelWithoutColon.pop_back();
+				if (!isSavedWord(labelWithoutColon))
+				{
+					_symbol = labelWithoutColon;
+					flag = false;
+				}
+			}
+			
+			if(flag)
+			{
+				throw AssemblerExceptionSyntaxSymbol();
 			}
 		}
 
@@ -58,24 +72,40 @@ namespace Assembler
 
 		void parse()
 		{
-			if (_asmStmt.length() > 80)
-				throw AssemblerExceptionLineOverflow();
-
-			std::vector<std::string> tokens = StringUtility::splitBySpacesAndTabs(_asmStmt);
-
-			if (isEmptyStmt(tokens.size())) return;
-			if (isCommentStmt(tokens[0])) return;
-			
-			checkForLabel(tokens);
-
-			if (_symbol.has_value())
+			try
 			{
-				tokens = StringUtility::splitByDelimeter(_asmStmt, ":");
-				
-				if(tokens.size() > 1)
-					tokens = StringUtility::splitBySpacesAndTabs(tokens[1]);
+				if (_asmStmt.length() > 80)
+					throw AssemblerExceptionLineOverflow();
+
+				std::vector<std::string> tokens = StringUtility::splitBySpacesAndTabs(_asmStmt);
+
+				if (isEmptyStmt(tokens.size())) return;
+				if (isCommentStmt(tokens[0])) return;
+
+				checkForLabel(tokens);
+
+				if (_symbol.has_value())
+				{
+					tokens = StringUtility::splitByDelimeter(_asmStmt, ":");
+
+					if (tokens.size() > 1)
+						tokens = StringUtility::splitBySpacesAndTabs(tokens[1]);
+				}
+			} 
+			catch (const AssemblerException & ex)
+			{
+				_exception = ex.what();
 			}
-			
+		}
+
+		const std::optional<std::string>& getSymbol()
+		{
+			return _symbol;
+		}
+
+		const std::optional<std::string>& getException()
+		{
+			return _exception;
 		}
 	};
 }

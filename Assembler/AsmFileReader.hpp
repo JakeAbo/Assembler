@@ -12,7 +12,7 @@ namespace Assembler
 	class AsmFileReader
 	{
 	private:
-		enum class Counter
+		enum class CounterType
 		{
 			IC,
 			DC
@@ -21,8 +21,9 @@ namespace Assembler
 		std::string _filePath;
 		std::fstream _file;
 		std::vector<Statment> _stmts;
-		std::map<std::string, std::pair<Counter, size_t>> _symbols;
-		
+		std::map<std::string, std::pair<CounterType, size_t>> _symbols;
+		std::optional<std::string> _exceptionFile;
+
 		bool isFileOpen()
 		{
 			return _file.is_open();
@@ -42,27 +43,46 @@ namespace Assembler
 
 		void openFile()
 		{
-			_file.open(_filePath);
+			try
+			{
+				_file.open(_filePath);
 
-			if (!isFileOpen())
-				throw AssemblerExceptionUnableOpen();
+				if (!isFileOpen())
+					throw AssemblerExceptionUnableOpen();
+			} 
+			catch (const AssemblerException & ex)
+			{
+				_exceptionFile = ex.what();
+			}
 		}
 
 		void compileFile()
 		{
-			if (!isFileOpen())
-				throw AssemblerExceptionUnableOpen();
-			
-			std::string line;
-
-			while (std::getline(_file, line))
+			try
 			{
-				Statment currentStmt(line);
-				currentStmt.parse();
-				_stmts.emplace_back(std::move(currentStmt));
-			}
+				if (!isFileOpen())
+					throw AssemblerExceptionUnableOpen();
 
-			//Second iterate - update symbols according to symbol table
+				std::string line;
+
+				while (std::getline(_file, line))
+				{
+					Statment currentStmt(line);
+					currentStmt.parse();
+					_stmts.emplace_back(std::move(currentStmt));
+				}
+
+				//Second iterate - update symbols according to symbol table
+			}
+			catch (const AssemblerException & ex)
+			{
+				_exceptionFile = ex.what();
+			}
+		}
+
+		const std::optional<std::string>& getException()
+		{
+			return _exceptionFile;
 		}
 	};
 }

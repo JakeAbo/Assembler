@@ -13,6 +13,9 @@
     <ClCompile Include="AsmFileTester.cpp">
       <Filter>TestModules</Filter>
     </ClCompile>
+    <ClCompile Include="StatmentTester.cpp">
+      <Filter>TestModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GoogleTestMain">
