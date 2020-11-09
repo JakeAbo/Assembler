@@ -87,7 +87,7 @@ namespace Tester
 
 		TEST(SymbolTestWithoutSymbol, StatmentTesterSavedNames)
 		{
-			Assembler::Statment stmt(" \t \t    \t  \t\t mov -103 \t, \t @r2 \t \t");
+			Assembler::Statment stmt(" \t \t    \t  \t\t .data -103 \t, \t 15 \t , 2\t");
 			stmt.parse();
 
 			EXPECT_EQ(stmt.getException().has_value(), false);

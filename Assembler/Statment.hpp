@@ -12,7 +12,7 @@ namespace Assembler
 	{
 	private:
 		std::string _asmStmt;
-		Command _cmd;
+		std::optional<Command> _cmd;
 		std::optional<std::string> _symbol;
 		std::optional<std::string> _exception;
 
@@ -67,6 +67,25 @@ namespace Assembler
 			}
 		}
 
+		void checkForDataInstructionCommand(const std::vector<std::string>& tokens)
+		{
+			if(!AssemblerTypes::getDataType(tokens[0]).has_value()) 
+				return;
+			
+			AssemblerTypes::DataInstructionType dit = AssemblerTypes::getDataType(tokens[0]).value();
+			if (dit == AssemblerTypes::DataInstructionType::DATA)
+			{
+				std::ostringstream os;
+				for (int i = 1; i < tokens.size(); i++)
+				{
+					os << tokens[i];
+				}
+
+				std::vector<std::string> tokensData = StringUtility::splitByDelimeter(os.str(), ",");
+
+			}
+		}
+
 	public:
 		Statment(const std::string asmStmt)
 			: _asmStmt(asmStmt), _cmd()
@@ -78,7 +97,7 @@ namespace Assembler
 		{
 			try
 			{
-				if (_asmStmt.length() > 80)
+				if (_asmStmt.length() > AssemblerTypes::LINE_MAX_LENGTH)
 					throw AssemblerExceptionLineOverflow();
 
 				std::vector<std::string> tokens = StringUtility::splitBySpacesAndTabs(_asmStmt);
@@ -95,6 +114,8 @@ namespace Assembler
 					if (tokens.size() > 1)
 						tokens = StringUtility::splitBySpacesAndTabs(tokens[1]);
 				}
+
+				checkForDataInstructionCommand(tokens);
 			} 
 			catch (const AssemblerException & ex)
 			{
@@ -110,6 +131,11 @@ namespace Assembler
 		const std::optional<std::string>& getException()
 		{
 			return _exception;
+		}
+
+		bool isEmptyOrComment()
+		{
+			return !_cmd.has_value();
 		}
 	};
 }

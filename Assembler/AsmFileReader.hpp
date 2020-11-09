@@ -69,7 +69,7 @@ namespace Assembler
 				{
 					Statment currentStmt(line);
 					currentStmt.parse();
-					_stmts.emplace_back(std::move(currentStmt));
+					if(!currentStmt.isEmptyOrComment()) _stmts.emplace_back(std::move(currentStmt));
 				}
 
 				//Second iterate - update symbols according to symbol table

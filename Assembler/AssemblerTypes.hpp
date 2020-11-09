@@ -13,6 +13,9 @@ namespace Assembler
 		friend class Statment;
 
 	private:
+		/* Assembly Code Properties */
+		static constexpr auto LINE_MAX_LENGTH = 80;
+
 		/* Word Properties */
 		static constexpr auto WORD_SIZE = 12;
 		static constexpr auto NUMBER_SIZE = 10;
@@ -95,6 +98,14 @@ namespace Assembler
 			STOP = 15
 		};
 
+		enum class DataInstructionType
+		{
+			DATA = 0,
+			STRING,
+			ENTRY,
+			EXTERN = 3
+		};
+
 		static std::optional<Register> getRegister(const std::string& reg)
 		{
 			static const std::map<std::string, Register> registers = {
@@ -153,6 +164,21 @@ namespace Assembler
 
 			if (operations.find(op) != operations.end())
 				return operations.at(op);
+
+			return {};
+		}
+
+		static std::optional<DataInstructionType> getDataType(const std::string& dataInstruction)
+		{
+			static const std::map<std::string, DataInstructionType> dataTypes = {
+				{".data", DataInstructionType::DATA},
+				{".string", DataInstructionType::STRING},
+				{".entry", DataInstructionType::ENTRY},
+				{".extern", DataInstructionType::EXTERN}
+			};
+
+			if (dataTypes.find(dataInstruction) != dataTypes.end())
+				return dataTypes.at(dataInstruction);
 
 			return {};
 		}
