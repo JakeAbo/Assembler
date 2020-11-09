@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <map>
 
 #include "Statment.hpp"
 
@@ -11,10 +12,17 @@ namespace Assembler
 	class AsmFileReader
 	{
 	private:
+		enum class Counter
+		{
+			IC,
+			DC
+		};
+
 		std::string _filePath;
 		std::fstream _file;
 		std::vector<Statment> _stmts;
-	
+		std::map<std::string, std::pair<Counter, size_t>> _symbols;
+		
 		bool isFileOpen()
 		{
 			return _file.is_open();
@@ -37,13 +45,13 @@ namespace Assembler
 			_file.open(_filePath);
 
 			if (!isFileOpen())
-				throw new AssemblerExceptionUnableOpen();
+				throw AssemblerExceptionUnableOpen();
 		}
 
 		void compileFile()
 		{
 			if (!isFileOpen())
-				throw new AssemblerExceptionUnableOpen();
+				throw AssemblerExceptionUnableOpen();
 			
 			std::string line;
 

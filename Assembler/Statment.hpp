@@ -1,8 +1,10 @@
 #pragma once
 
+#include <regex>
+#include <optional>
+
 #include "Command.hpp"
 #include "StringUtility.hpp"
-#include <regex>
 
 namespace Assembler
 {
@@ -11,6 +13,7 @@ namespace Assembler
 	private:
 		std::string _asmStmt;
 		Command _cmd;
+		std::optional<std::string> _symbol;
 
 		bool isEmptyStmt(size_t len)
 		{
@@ -22,30 +25,27 @@ namespace Assembler
 			return firstToken[0] == ';';
 		}
 
-		bool isFirstTokenLabel(const std::vector<std::string>& tokens)
+		bool isSavedWord(const std::string& token)
+		{
+			return (!AssemblerTypes::getRegister(token).has_value() && 
+				!AssemblerTypes::getOpCode(token).has_value());
+		}
+
+		void checkForLabel(const std::vector<std::string>& tokens)
 		{
 			std::ostringstream os;
 
 			os << tokens[0];
 
-			if (tokens[0][tokens[0].length()] != ':')
+			if (tokens[0][tokens[0].length() - 1] != ':')
 			{
 				os << tokens[1][0];
 			}
 
-
-			std::regex reg("^[a-zA-Z][a-zA-Z0-9]{1,31}$");
-			std::regex reg1("^[a-zA-Z][a-zA-Z0-9]{1,32}[:]$");
-			if (std::regex_match(tokens[0], reg))
+			std::regex reg(StringUtility::REGEX_SYMBOL_VALIDATE);
+			if (std::regex_match(os.str(), reg) && isSavedWord(os.str()))
 			{
-				if (tokens.size() > 2)
-				{
-					std::regex reg2("^[:]$");
-					if (std::regex_match(tokens[1], reg2))
-					{
-						return true;
-					}
-				}
+				_symbol = os.str();
 			}
 		}
 
@@ -59,23 +59,23 @@ namespace Assembler
 		void parse()
 		{
 			if (_asmStmt.length() > 80)
-				throw new AssemblerExceptionLineOverflow();
+				throw AssemblerExceptionLineOverflow();
 
 			std::vector<std::string> tokens = StringUtility::splitBySpacesAndTabs(_asmStmt);
 
 			if (isEmptyStmt(tokens.size())) return;
 			if (isCommentStmt(tokens[0])) return;
 			
-			if (isFirstTokenLabel(tokens))
+			checkForLabel(tokens);
+
+			if (_symbol.has_value())
 			{
-
+				tokens = StringUtility::splitByDelimeter(_asmStmt, ":");
+				
+				if(tokens.size() > 1)
+					tokens = StringUtility::splitBySpacesAndTabs(tokens[1]);
 			}
-
-
-			for (const auto& token : tokens)
-			{
-
-			}
+			
 		}
 	};
 }

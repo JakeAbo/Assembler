@@ -1,10 +1,16 @@
 #pragma once
 
+#include <map>
+#include <ostream>
+#include <sstream>
+#include <optional>
+
 namespace Assembler
 {
 	class AssemblerTypes
 	{
 		friend class Word;
+		friend class Statment;
 
 	private:
 		/* Word Properties */
@@ -88,5 +94,67 @@ namespace Assembler
 			RTS,
 			STOP = 15
 		};
+
+		static std::optional<Register> getRegister(const std::string& reg)
+		{
+			static const std::map<std::string, Register> registers = {
+				{"@r0", Register::R0},
+				{"@r1", Register::R1},
+				{"@r2", Register::R2},
+				{"@r3", Register::R3},
+				{"@r4", Register::R4},
+				{"@r5", Register::R5},
+				{"@r6", Register::R6},
+				{"@r7", Register::R7},
+			};
+
+			if (registers.find(reg) != registers.end())
+			{
+				return registers.at(reg);
+			}
+				
+			return {};
+		}
+
+		static std::optional<Register> checkIfSavedReg(const std::string& reg)
+		{
+			std::ostringstream regWithShtrudel;
+
+			if (reg[0] != '@')
+			{
+				regWithShtrudel << '@';
+			}
+
+			regWithShtrudel << reg;
+
+			return getRegister(regWithShtrudel.str());
+		}
+
+		static std::optional<Operation> getOpCode(const std::string& op)
+		{
+			static const std::map<std::string, Operation> operations = {
+				{"mov", Operation::MOV},
+				{"cmp", Operation::CMP},
+				{"add", Operation::ADD},
+				{"sub", Operation::SUB},
+				{"not", Operation::NOT},
+				{"clr", Operation::CLR},
+				{"lea", Operation::LEA},
+				{"inc", Operation::INC},
+				{"dec", Operation::DEC},
+				{"jmp", Operation::JMP},
+				{"bne", Operation::BNE},
+				{"red", Operation::RED},
+				{"prn", Operation::PRN},
+				{"jsr", Operation::JSR},
+				{"rts", Operation::RTS},
+				{"stop", Operation::STOP}
+			};
+
+			if (operations.find(op) != operations.end())
+				return operations.at(op);
+
+			return {};
+		}
 	};
 }
