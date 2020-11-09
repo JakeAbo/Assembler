@@ -56,6 +56,10 @@ namespace Assembler
 					flag = false;
 				}
 			}
+			else
+			{
+				flag = (os.str().back() == ':');
+			}
 			
 			if(flag)
 			{

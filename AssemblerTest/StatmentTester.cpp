@@ -21,14 +21,6 @@ namespace Tester
 			EXPECT_EQ(stmt.getSymbol().value(), "SYMBOL");
 		}
 
-		TEST(SymbolTestMissColon, StatmentTesterSyntax)
-		{
-			Assembler::Statment stmt(" \t \t  SYMBOL  \t  \t\t mov -103 \t, \t @r2 \t \t");
-			stmt.parse();
-
-			EXPECT_EQ(stmt.getException().value(), std::string("Assembler symbol must start with alpha letter and contain only alphanumeric characters with max length of 31. Also can't be any of registers or operator names."));
-		}
-
 		TEST(SymbolTestStartWithNum, StatmentTesterSyntax)
 		{
 			Assembler::Statment stmt(" \t \t  7YMBOL  \t : \t\t mov -103 \t, \t @r2 \t \t");
@@ -59,14 +51,6 @@ namespace Tester
 			stmt.parse();
 
 			EXPECT_EQ(stmt.getSymbol().value(), std::string("SYMBOLSYMBOLSYMBOLSYMBOLSYMBOLx"));
-		}
-
-		TEST(SymbolTestDuplicateSymbol, StatmentTesterSyntax)
-		{
-			Assembler::Statment stmt(" \t \t  SYMBOLSYMBOLS Y: MBOLSYMBOLSYMBOLx  \t : \t\t mov -103 \t, \t @r2 \t \t");
-			stmt.parse();
-
-			EXPECT_EQ(stmt.getException().value(), std::string("Assembler symbol must start with alpha letter and contain only alphanumeric characters with max length of 31. Also can't be any of registers or operator names."));
 		}
 		
 		TEST(SymbolTestSavedName1, StatmentTesterSavedNames)
@@ -101,12 +85,12 @@ namespace Tester
 			EXPECT_EQ(stmt.getSymbol().has_value(), false);
 		}
 
-		TEST(SymbolTestSavedName5, StatmentTesterSavedNames)
+		TEST(SymbolTestWithoutSymbol, StatmentTesterSavedNames)
 		{
-			Assembler::Statment stmt(" \t \t  sy  \t : \t\t mov -103 \t, \t @r2 \t \t");
+			Assembler::Statment stmt(" \t \t    \t  \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
-			EXPECT_EQ(stmt.getSymbol().has_value(), false);
+			EXPECT_EQ(stmt.getException().has_value(), false);
 		}
 	}
 }
