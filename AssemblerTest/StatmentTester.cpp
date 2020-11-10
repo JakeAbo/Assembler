@@ -116,5 +116,13 @@ namespace Tester
 
 			EXPECT_EQ(stmt.getException().value(), std::string("Assembler unknwon instruction"));
 		}
+
+		TEST(StatmentSymbolData, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    , \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(), std::string("000000000110\n111111110111\n000000001111\n"));
+		}
 	}
 }

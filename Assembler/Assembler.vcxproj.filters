@@ -44,5 +44,8 @@
     <ClInclude Include="Statment.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommandParser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

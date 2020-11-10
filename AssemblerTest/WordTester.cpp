@@ -189,28 +189,28 @@ namespace Tester
 		{
 			w.clear().setAbsolute().setNumber(312);
 
-			EXPECT_EQ(w.getBinaryString(), "010011100000");
+			EXPECT_EQ(w.getBinaryString(), "000100111000");
 		}
 
 		TEST(Negative, WordNumber)
 		{
 			w.clear().setAbsolute().setNumber(-312);
 
-			EXPECT_EQ(w.getBinaryString(), "101100100000");
+			EXPECT_EQ(w.getBinaryString(), "111011001000");
 		}
 
 		TEST(MaxPositive, WordNumber)
 		{
-			w.clear().setAbsolute().setNumber(1023);
+			w.clear().setAbsolute().setNumber(4095);
 
-			EXPECT_EQ(w.getBinaryString(), "111111111100");
+			EXPECT_EQ(w.getBinaryString(), "111111111111");
 		}
 
 		TEST(MinNegative, WordNumber)
 		{
-			w.clear().setAbsolute().setNumber(-1023);
+			w.clear().setAbsolute().setNumber(-4095);
 
-			EXPECT_EQ(w.getBinaryString(), "000000000100");
+			EXPECT_EQ(w.getBinaryString(), "000000000001");
 		}
 
 		TEST(OverflowNegative, WordNumber)

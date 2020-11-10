@@ -133,6 +133,7 @@
     <ClInclude Include="AssemblerStreams.hpp" />
     <ClInclude Include="AssemblerTypes.hpp" />
     <ClInclude Include="Command.hpp" />
+    <ClInclude Include="CommandParser.hpp" />
     <ClInclude Include="Statment.hpp" />
     <ClInclude Include="StringUtility.hpp" />
     <ClInclude Include="Word.hpp" />

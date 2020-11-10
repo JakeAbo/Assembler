@@ -11,14 +11,17 @@ namespace Assembler
 	{
 		friend class Word;
 		friend class Statment;
+		friend class CommandParsers;
 
 	private:
 		/* Assembly Code Properties */
 		static constexpr auto LINE_MAX_LENGTH = 80;
+		static constexpr auto LEX_COLON = ':';
+		static constexpr auto LEX_COMMA = ',';
 
 		/* Word Properties */
 		static constexpr auto WORD_SIZE = 12;
-		static constexpr auto NUMBER_SIZE = 10;
+		static constexpr auto NUMBER_SIZE = 12;
 		static constexpr auto CODE_SIZE = 2;
 		static constexpr auto OP_CODE_SIZE = 4;
 		static constexpr auto OPERNAD_LBA_SIZE = 3;
@@ -44,9 +47,9 @@ namespace Assembler
 
 		/* Second or Third Word */
 		/* Number */
-		static constexpr auto NUMBER_0 = 2;
-		static constexpr auto NUMBER_MIN_VALUE = -1023;
-		static constexpr auto NUMBER_MAX_VALUE = 1023;
+		static constexpr auto NUMBER_0 = 0;
+		static constexpr auto NUMBER_MIN_VALUE = -4095;
+		static constexpr auto NUMBER_MAX_VALUE = 4095;
 
 		/* Register */
 		static constexpr auto DEST_REGISTER_0 = 2;
