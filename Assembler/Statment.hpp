@@ -2,6 +2,10 @@
 
 #include <regex>
 #include <optional>
+#include <map>
+#include <functional>
+#include <memory>
+#include <utility>
 
 #include "Command.hpp"
 #include "StringUtility.hpp"
@@ -66,24 +70,65 @@ namespace Assembler
 				throw AssemblerExceptionSyntaxSymbol();
 			}
 		}
-
-		void checkForDataInstructionCommand(const std::vector<std::string>& tokens)
+	
+		void parseCommand(const std::vector<std::string>& tokens)
 		{
-			if(!AssemblerTypes::getDataType(tokens[0]).has_value()) 
-				return;
-			
-			AssemblerTypes::DataInstructionType dit = AssemblerTypes::getDataType(tokens[0]).value();
-			if (dit == AssemblerTypes::DataInstructionType::DATA)
+			typedef std::function<void(const std::vector<std::string>&)> instructionFunctor;
+			static std::map<std::string, instructionFunctor> commandParsers;
+			if(commandParsers.empty())
 			{
-				std::ostringstream os;
-				for (int i = 1; i < tokens.size(); i++)
-				{
-					os << tokens[i];
-				}
-
-				std::vector<std::string> tokensData = StringUtility::splitByDelimeter(os.str(), ",");
-
+				commandParsers[".data"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers[".string"] = std::bind(&Statment::parseStringInstruction, this, std::placeholders::_1);
+				commandParsers[".entry"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers[".extern"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["mov"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["cmp"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["add"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["sub"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["not"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["clr"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["lea"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["inc"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["dec"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["jmp"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["bne"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["red"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["prn"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["jsr"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["rts"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
+				commandParsers["stop"] = std::bind(&Statment::parseDataInstruction, this, std::placeholders::_1);
 			}
+
+			/* Check if there is no command declared */
+			if (tokens.size() == 0)
+			{
+				_symbol = {};
+				return;
+			}
+
+			if (commandParsers.find(tokens[0]) == commandParsers.end())
+			{
+				_symbol = {};
+				throw AssemblerExceptionUnknownInstruction();
+			}
+			
+			commandParsers.at(tokens[0])(tokens);
+		}
+
+		void parseDataInstruction(const std::vector<std::string>& tokens)
+		{
+			std::ostringstream os;
+			for (int i = 1; i < tokens.size(); i++)
+			{
+				os << tokens[i];
+			}
+
+			std::vector<std::string> tokensData = StringUtility::splitByDelimeter(os.str(), ",");
+		}
+
+		void parseStringInstruction(const std::vector<std::string>& tokens)
+		{
+
 		}
 
 	public:
@@ -115,7 +160,7 @@ namespace Assembler
 						tokens = StringUtility::splitBySpacesAndTabs(tokens[1]);
 				}
 
-				checkForDataInstructionCommand(tokens);
+				parseCommand(tokens);
 			} 
 			catch (const AssemblerException & ex)
 			{

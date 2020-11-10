@@ -92,5 +92,29 @@ namespace Tester
 
 			EXPECT_EQ(stmt.getException().has_value(), false);
 		}
+
+		TEST(SymbolTestUnknownCommand, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt(" \t \t    \t SYMBOL: \tdt\t  \t \t  \t \t");
+			stmt.parse();
+
+			EXPECT_EQ(stmt.getException().value(), std::string("Assembler unknwon instruction"));
+		}
+
+		TEST(SymbolTestUnknownSymbol, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt(" \t \t    \t : \tdt\t  \t \t  \t \t");
+			stmt.parse();
+
+			EXPECT_EQ(stmt.getException().value(), std::string("Assembler symbol must start with alpha letter and contain only alphanumeric characters with max length of 31. Also can't be any of registers or operator names."));
+		}
+
+		TEST(SymbolTestUnknownCommand3, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt(" \t \t    \t  \tdt\t  \t \t  \t \t");
+			stmt.parse();
+
+			EXPECT_EQ(stmt.getException().value(), std::string("Assembler unknwon instruction"));
+		}
 	}
 }
