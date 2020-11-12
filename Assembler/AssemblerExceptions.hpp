@@ -15,6 +15,8 @@ namespace Assembler
 		static constexpr auto EXCEPTION_UNKNOWN_INSTRUCTION		= "Assembler unknwon instruction";
 		static constexpr auto EXCEPTION_INVALID_ARGUMENT		= "Assembler invalid argument";
 		static constexpr auto EXCEPTION_OVERFLOW_ARGUMENT		= "Assembler overflow argument";
+		static constexpr auto EXCEPTION_ARGUMENT_MISSING		= "Assembler missing argument";
+		static constexpr auto EXCEPTION_TOO_MANY_ARGUMENTS		= "Assembler too many arguments";
 
 	public:
 		virtual const char* what() const throw()
@@ -83,6 +85,24 @@ namespace Assembler
 		virtual const char* what() const throw()
 		{
 			return EXCEPTION_OVERFLOW_ARGUMENT;
+		}
+	};
+
+	class AssemblerExceptionMissingArgument : public AssemblerException
+	{
+	public:
+		virtual const char* what() const throw()
+		{
+			return EXCEPTION_ARGUMENT_MISSING;
+		}
+	};
+
+	class AssemblerExceptionTooManyArguments : public AssemblerException
+	{
+	public:
+		virtual const char* what() const throw()
+		{
+			return EXCEPTION_TOO_MANY_ARGUMENTS;
 		}
 	};
 }

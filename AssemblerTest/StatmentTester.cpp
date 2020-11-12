@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Statment.hpp"
+#include "Symbol.hpp"
 
 namespace Tester
 {
@@ -123,6 +124,221 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(), std::string("000000000110\n111111110111\n000000001111\n"));
+		}
+
+		TEST(StatmentSymbolData2, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t. data\t  \t6  \t , \t -9    , \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler unknwon instruction"));
+		}
+
+		TEST(StatmentSymbolData3, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t  \t  \t      \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(), std::string("000000001111\n"));
+		}
+
+		TEST(StatmentSymbolData4, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t  \t  \t      \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData5, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    , \t 15      ; comment ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(), std::string("000000000110\n111111110111\n000000001111\n"));
+		}
+
+		TEST(StatmentSymbolData6, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    ; comment, \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(), std::string("000000000110\n111111110111\n"));
+		}
+
+		TEST(StatmentSymbolData7, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t ,, \t -9    ,; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData8, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    ,; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData9, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t-6  \t , \t -9 , +15   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(), std::string("111111111010\n111111110111\n000000001111\n"));
+		}
+
+		TEST(StatmentSymbolData10, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t-6  \t , \t -9 , +15-   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData11, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t-6  \t , \t -9- , +15   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData12, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t  \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData13, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  ,\t  \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolData14, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  6,\t  \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolString, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t  \t  \t \"abcdef\"   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000001100001\n000001100010\n000001100011\n000001100100\n000001100101\n000001100110\n000000000000\n"));
+		}
+
+		TEST(StatmentSymbolString1, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t\"  \t  \t \"abcdef\"   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolString2, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t  \t  \t \"abcdef\" \"as\"   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolString3, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t ;  \t  \t \"abcdef\"   ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolString4, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolEntry, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			auto symbol = stmt2.getCommandSymbol().value();
+			auto symbolType = symbol.getType();
+			EXPECT_EQ(symbol.getName(), std::string("HELLO"));
+			EXPECT_EQ(symbol.getType(), Assembler::SymbolType::ENTRY);
+		}
+
+		TEST(StatmentSymbolEntryException1, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO \t \td  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler too many arguments"));
+		}
+
+		TEST(StatmentSymbolEntryException2, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO@ \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentSymbolExtern, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.extern\t  HELLO \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			auto symbol = stmt2.getCommandSymbol().value();
+			auto symbolType = symbol.getType();
+			EXPECT_EQ(symbol.getName(), std::string("HELLO"));
+			EXPECT_EQ(symbol.getType(), Assembler::SymbolType::EXTERN);
+		}
+
+		TEST(StatmentSymbolExternException1, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO \t \td  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler too many arguments"));
+		}
+
+		TEST(StatmentSymbolExternException2, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.extern\t  HELLO@ \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+		
+		TEST(StatmentSymbolExternException3, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t. extern\t  HELLO@ \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler unknwon instruction"));
+		}
+
+		TEST(StatmentSymbolExternException4, StatmentTesterComamands)
+		{
+			Assembler::Statment stmt2(" \t STR \t :   \t  \t.extern\t   \t \t  \t    ; comment \t 15 ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler missing argument"));
 		}
 	}
 }

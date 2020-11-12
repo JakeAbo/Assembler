@@ -12,9 +12,7 @@ namespace Assembler
 		friend class Statment;
 		friend class CommandParsers;
 
-	private:
-		static constexpr auto REGEX_SYMBOL_VALIDATE = "^[a-zA-Z][a-zA-Z0-9]{0,30}[:]$"; 
-	
+	private:	
 		template<char delimeter>
 		class WordDelimitedBy : public std::string
 		{
@@ -87,6 +85,12 @@ namespace Assembler
 			}
 
 			return res;
+		}
+	
+		static std::string deleteComments(const std::string& stmt)
+		{
+			auto res = splitByDelimeter<AssemblerTypes::LEX_COMMENT_SIGN>(stmt);
+			return (res.empty() ? stmt : res[0]);
 		}
 	};
 }

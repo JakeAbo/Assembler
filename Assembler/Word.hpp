@@ -210,7 +210,7 @@ namespace Assembler
 			return *this;
 		}
 
-		/* Set Number in 10 last bits */
+		/* Set Number in word */
 		Word& setNumber(int num)
 		{
 			if (num < AssemblerTypes::NUMBER_MIN_VALUE || num > AssemblerTypes::NUMBER_MAX_VALUE)
@@ -225,6 +225,12 @@ namespace Assembler
 			}
 
 			return *this;
+		}
+
+		/* Set Asci in word */
+		Word& setAscii(char c)
+		{
+			return setNumber(static_cast<int>(c));
 		}
 
 		/* Set Register */

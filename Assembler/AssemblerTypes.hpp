@@ -12,12 +12,21 @@ namespace Assembler
 		friend class Word;
 		friend class Statment;
 		friend class CommandParsers;
+		friend class StringUtility;
 
 	private:
+		/* Regexs */
+		static constexpr auto REGEX_SYMBOL_VALIDATE_COLON	= "^[a-zA-Z][a-zA-Z0-9]{0,30}[:]$";
+		static constexpr auto REGEX_SYMBOL_VALIDATE			= "^[a-zA-Z][a-zA-Z0-9]{0,30}$";
+		static constexpr auto REGEX_DATA_ARG_VALIDATE		= "^[-+]?[0-9]+(,[-+]?[0-9]+)*$";
+		static constexpr auto REGEX_STRING_ARG_VALIDATE		= "^\"[a-zA-Z0-9]+\"$";
+
 		/* Assembly Code Properties */
 		static constexpr auto LINE_MAX_LENGTH = 80;
 		static constexpr auto LEX_COLON = ':';
 		static constexpr auto LEX_COMMA = ',';
+		static constexpr auto LEX_QUOTATION = '"';
+		static constexpr auto LEX_COMMENT_SIGN = ';';
 
 		/* Word Properties */
 		static constexpr auto WORD_SIZE = 12;

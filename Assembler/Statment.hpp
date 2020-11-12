@@ -6,16 +6,19 @@
 #include <functional>
 #include <memory>
 #include <utility>
+#include <variant>
 
 #include "Command.hpp"
 #include "StringUtility.hpp"
 #include "CommandParser.hpp"
+#include "Symbol.hpp"
 
 namespace Assembler
 {
 	class Statment
 	{
 	private:
+		std::variant<Command, Symbol> _result;
 		std::string _asmStmt;
 		std::optional<Command> _cmd;
 		std::optional<std::string> _symbol;
@@ -50,7 +53,7 @@ namespace Assembler
 				os << tokens[1][0];
 			}
 
-			std::regex reg(StringUtility::REGEX_SYMBOL_VALIDATE);
+			std::regex reg(AssemblerTypes::REGEX_SYMBOL_VALIDATE_COLON);
 			if (std::regex_match(os.str(), reg))
 			{
 				std::string labelWithoutColon = os.str();
@@ -74,14 +77,14 @@ namespace Assembler
 	
 		void parseCommand(const std::vector<std::string>& tokens)
 		{
-			typedef std::function<Command(const std::vector<std::string>&)> instructionFunctor;
+			typedef std::function<std::variant<Command, Symbol>(const std::vector<std::string>&)> instructionFunctor;
 			static std::map<std::string, instructionFunctor> commandParsers;
 			if(commandParsers.empty())
 			{
 				commandParsers[".data"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers[".string"] = std::bind(&CommandParsers::parseStringInstruction, std::placeholders::_1);
-				commandParsers[".entry"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers[".extern"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
+				commandParsers[".entry"] = std::bind(&CommandParsers::parseEntryInstruction, std::placeholders::_1);
+				commandParsers[".extern"] = std::bind(&CommandParsers::parseExternInstruction, std::placeholders::_1);
 				commandParsers["mov"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers["cmp"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers["add"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
@@ -115,7 +118,7 @@ namespace Assembler
 			
 			try
 			{
-				_cmd = commandParsers.at(tokens[0])(tokens);
+				_result = commandParsers.at(tokens[0])(tokens);
 			} 
 			catch (const AssemblerException & ex)
 			{
@@ -124,11 +127,9 @@ namespace Assembler
 			}
 		}
 
-
-
 	public:
 		Statment(const std::string asmStmt)
-			: _asmStmt(asmStmt), _cmd()
+			: _asmStmt(asmStmt)
 		{
 
 		}
@@ -140,6 +141,7 @@ namespace Assembler
 				if (_asmStmt.length() > AssemblerTypes::LINE_MAX_LENGTH)
 					throw AssemblerExceptionLineOverflow();
 
+				_asmStmt = StringUtility::deleteComments(_asmStmt);
 				std::vector<std::string> tokens = StringUtility::splitBySpacesAndTabs(_asmStmt);
 
 				if (isEmptyStmt(tokens.size())) return;
@@ -178,9 +180,28 @@ namespace Assembler
 			return _exception;
 		}
 
-		const std::optional<Command>& getCommand()
+		const std::optional<Command> getCommand()
 		{
-			return _cmd;
+			try
+			{
+				return { std::get<Command>(_result) };
+			}
+			catch (const std::bad_variant_access&)
+			{
+				return {};
+			}
+		}
+
+		const std::optional<Symbol> getCommandSymbol()
+		{
+			try
+			{
+				return { std::get<Symbol>(_result) };
+			}
+			catch (const std::bad_variant_access&)
+			{
+				return {};
+			}
 		}
 
 		bool isEmptyOrComment()
