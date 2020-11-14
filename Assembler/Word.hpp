@@ -2,16 +2,19 @@
 
 #include <bitset>
 #include <ostream>
+#include <functional>
 
 #include "AssemblerTypes.hpp"
 #include "AssemblerExceptions.hpp"
 #include "AssemblerStreams.hpp"
+#include "Symbol.hpp"
 
 namespace Assembler
 {
 	class Word
 	{
 	private:
+		std::optional<std::string> _symbol;
 		std::bitset<AssemblerTypes::WORD_SIZE> _bits; /* initalize all bits to 0 */
 
 	public:
@@ -54,6 +57,13 @@ namespace Assembler
 		{
 			os << word.getWordBase64();
 			return os;
+		}
+
+		/* set Symbol */
+		Word& setSymbol(const std::string& symbol)
+		{
+			_symbol = symbol;
+			return *this;
 		}
 
 		/* Code Type */
@@ -114,6 +124,12 @@ namespace Assembler
 		}
 
 		/* Op Codes */
+		Word& setOpCodeAny(AssemblerTypes::Operation op)
+		{
+			setOpCode(op);
+			return *this;
+		}
+
 		Word& setOpCodeMov()
 		{
 			setOpCode(AssemblerTypes::Operation::MOV);
@@ -234,6 +250,12 @@ namespace Assembler
 		}
 
 		/* Set Register */
+		Word& setDestRegisterAny(AssemblerTypes::Register reg)
+		{
+			setDestinationRegister(reg);
+			return *this;
+		}
+
 		Word& setDestReg0()
 		{
 			setDestinationRegister(AssemblerTypes::Register::R0);
@@ -279,6 +301,12 @@ namespace Assembler
 		Word& setDestReg7()
 		{
 			setDestinationRegister(AssemblerTypes::Register::R7);
+			return *this;
+		}
+
+		Word& setSourceRegisterAny(AssemblerTypes::Register reg)
+		{
+			setSourceRegister(reg);
 			return *this;
 		}
 

@@ -340,5 +340,92 @@ namespace Tester
 
 			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler missing argument"));
 		}
+
+		TEST(StatmentMov1, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  mov \t51\t ,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("001000010100\n000000110011\n000000010000\n"));
+		}
+
+		TEST(StatmentMov2, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  mov \t-51\t ,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("001000010100\n111111001101\n000000010000\n"));
+		}
+
+		TEST(StatmentMov3, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("101000010100\n000100010000\n"));
+		}
+
+		TEST(StatmentMovException1, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler too many arguments"));
+		}
+
+		TEST(StatmentMovException2, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,  \t @r24\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentMovException3, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,  \t 1\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentCmp1, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  cmp \t51\t ,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("001000110100\n000000110011\n000000010000\n"));
+		}
+
+		TEST(StatmentCmp2, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  cmp \t51\t ,  \t-3\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("001000100100\n000000110011\n111111111101\n"));
+		}
+
+		TEST(StatmentAdd1, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  add \t51\t ,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("001001010100\n000000110011\n000000010000\n"));
+		}
+
+		TEST(StatmentSub1, Command2Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  sub \t51\t ,  \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("001001110100\n000000110011\n000000010000\n"));
+		}
 	}
 }

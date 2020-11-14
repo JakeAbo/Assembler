@@ -85,13 +85,15 @@ namespace Assembler
 				commandParsers[".string"] = std::bind(&CommandParsers::parseStringInstruction, std::placeholders::_1);
 				commandParsers[".entry"] = std::bind(&CommandParsers::parseEntryInstruction, std::placeholders::_1);
 				commandParsers[".extern"] = std::bind(&CommandParsers::parseExternInstruction, std::placeholders::_1);
-				commandParsers["mov"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["cmp"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["add"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["sub"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
+
+				commandParsers["mov"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
+				commandParsers["cmp"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
+				commandParsers["add"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
+				commandParsers["sub"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
+				commandParsers["lea"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
+
 				commandParsers["not"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers["clr"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["lea"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers["inc"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers["dec"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
 				commandParsers["jmp"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
