@@ -92,17 +92,18 @@ namespace Assembler
 				commandParsers["sub"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
 				commandParsers["lea"] = std::bind(&CommandParsers::parse2OperandOperation, std::placeholders::_1);
 
-				commandParsers["not"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["clr"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["inc"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["dec"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["jmp"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["bne"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["red"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["prn"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["jsr"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["rts"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
-				commandParsers["stop"] = std::bind(&CommandParsers::parseDataInstruction, std::placeholders::_1);
+				commandParsers["not"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["clr"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["inc"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["dec"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["jmp"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["bne"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["red"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["prn"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+				commandParsers["jsr"] = std::bind(&CommandParsers::parse1OperandOperation, std::placeholders::_1);
+
+				commandParsers["rts"] = std::bind(&CommandParsers::parseNoOperandOperation, std::placeholders::_1);
+				commandParsers["stop"] = std::bind(&CommandParsers::parseNoOperandOperation, std::placeholders::_1);
 			}
 
 			/* Check if there is no command declared */

@@ -191,5 +191,80 @@ namespace Assembler
 			
 			return res;
 		}
+
+		static Command parse1OperandOperation(std::vector<std::string> tokens)
+		{
+			Command res;
+			Word opt, opr1;
+
+			AssemblerTypes::Operation op = AssemblerTypes::getOpCode(tokens[0]).value();
+
+			opt.setAbsolute().setOpCodeAny(AssemblerTypes::getOpCode(tokens[0]).value());
+
+			tokens.erase(tokens.begin());
+
+			if (tokens.size() < 1)
+				throw AssemblerExceptionMissingArgument();
+			if (tokens.size() > 1)
+				throw AssemblerExceptionTooManyArguments();
+			
+			auto destReg = AssemblerTypes::getRegister(tokens[0]);
+			if (destReg.has_value())
+			{
+				opt.setDestinationDirectRegister();
+				opr1.setDestRegisterAny(destReg.value());
+			}
+			else
+			{
+				if (std::regex_match(tokens[0], std::regex(AssemblerTypes::REGEX_DATA_ARG_VALIDATE)))
+				{
+					if (op != AssemblerTypes::Operation::PRN)
+						throw AssemblerExceptionInvalidArgument();
+
+					opt.setDestinationImmediate();
+					try
+					{
+						opr1.setAbsolute().setNumber(std::stoi(tokens[0]));
+					}
+					catch (const std::invalid_argument&)
+					{
+						throw AssemblerExceptionInvalidArgument();
+					}
+				}
+				else
+				{
+					if (std::regex_match(tokens[0], std::regex(AssemblerTypes::REGEX_SYMBOL_VALIDATE)))
+					{
+						opt.setDestinationDirect();
+						opr1.setSymbol(tokens[0]);
+					}
+					else
+					{
+						throw AssemblerExceptionInvalidArgument();
+					}
+				}
+			}
+
+			res.addWords({ opt, opr1 });
+			return res;
+		}
+
+		static Command parseNoOperandOperation(std::vector<std::string> tokens)
+		{
+			Command res;
+			Word opt;
+
+			AssemblerTypes::Operation op = AssemblerTypes::getOpCode(tokens[0]).value();
+
+			opt.setAbsolute().setOpCodeAny(AssemblerTypes::getOpCode(tokens[0]).value());
+
+			tokens.erase(tokens.begin());
+
+			if (tokens.size() != 0)
+				throw AssemblerExceptionTooManyArguments();
+
+			res.addWord(std::move(opt));
+			return res;
+		}
 	};
 }

@@ -427,5 +427,145 @@ namespace Tester
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
 				std::string("001001110100\n000000110011\n000000010000\n"));
 		}
+
+		TEST(StatmentNot1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  not \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000010010100\n000000010000\n"));
+		}
+
+		TEST(StatmentClr1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  clr \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000010110100\n000000010000\n"));
+		}
+
+		TEST(StatmentInc1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  inc \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000011110100\n000000010000\n"));
+		}
+
+		TEST(StatmentDec1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  dec \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000100010100\n000000010000\n"));
+		}
+
+		TEST(StatmentJmp1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  jmp \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000100110100\n000000010000\n"));
+		}
+
+		TEST(StatmentBne1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  bne \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000101010100\n000000010000\n"));
+		}
+
+		TEST(StatmentRed1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  red \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000101110100\n000000010000\n"));
+		}
+
+		TEST(StatmentPrn1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  prn \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000110010100\n000000010000\n"));
+		}
+
+		TEST(StatmentPrn2, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  prn \t\t \t 51\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000110000100\n000000110011\n"));
+		}
+
+		TEST(StatmentJsr, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t @r4\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000110110100\n000000010000\n"));
+		}
+
+		TEST(StatmentJsrException1, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t @r4\t , \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler too many arguments"));
+		}
+
+		TEST(StatmentJsrException2, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t -5\t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler invalid argument"));
+		}
+
+		TEST(StatmentJsrException3, Command1Operands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t \t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler missing argument"));
+		}
+
+		TEST(StatmentRts, CommandNoOperands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  rts \t\t \t \t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000111000000\n"));
+		}
+
+		TEST(StatmentStop, CommandNoOperands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  stop \t\t \t \t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
+				std::string("000111100000\n"));
+		}
+
+		TEST(StatmentStopException, CommandNoOperands)
+		{
+			Assembler::Statment stmt2(" \t  \t    \t  stop \t\t @r4\t \t  \t     \t  ");
+			stmt2.parse();
+
+			EXPECT_EQ(stmt2.getException().value(), std::string("Assembler too many arguments"));
+		}
 	}
 }
