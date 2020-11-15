@@ -54,6 +54,11 @@ namespace Assembler
 			return os;
 		}
 
+		size_t getNumberOfWords() const
+		{
+			return _words.size();
+		}
+
 		const std::string getBinaryCommand() const
 		{
 			BinaryStream os;

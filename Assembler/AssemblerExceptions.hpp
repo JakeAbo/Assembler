@@ -17,6 +17,9 @@ namespace Assembler
 		static constexpr auto EXCEPTION_OVERFLOW_ARGUMENT		= "Assembler overflow argument";
 		static constexpr auto EXCEPTION_ARGUMENT_MISSING		= "Assembler missing argument";
 		static constexpr auto EXCEPTION_TOO_MANY_ARGUMENTS		= "Assembler too many arguments";
+		static constexpr auto EXCEPTION_SYMBOL_NOT_EXISTS		= "Assembler symbol not exists";
+		static constexpr auto EXCEPTION_SYMBOL_ALREADY_EXISTS	= "Assembler symbol already exists";
+
 
 	public:
 		virtual const char* what() const throw()
@@ -103,6 +106,24 @@ namespace Assembler
 		virtual const char* what() const throw()
 		{
 			return EXCEPTION_TOO_MANY_ARGUMENTS;
+		}
+	};
+
+	class AssemblerExceptionSymbolNotExists : public AssemblerException
+	{
+	public:
+		virtual const char* what() const throw()
+		{
+			return EXCEPTION_SYMBOL_NOT_EXISTS;
+		}
+	};
+
+	class AssemblerExceptionSymbolAlreadyExists : public AssemblerException
+	{
+	public:
+		virtual const char* what() const throw()
+		{
+			return EXCEPTION_SYMBOL_ALREADY_EXISTS;
 		}
 	};
 }

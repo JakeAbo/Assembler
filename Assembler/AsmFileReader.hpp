@@ -12,16 +12,9 @@ namespace Assembler
 	class AsmFileReader
 	{
 	private:
-		enum class CounterType
-		{
-			IC,
-			DC
-		};
-
 		std::string _filePath;
 		std::fstream _file;
 		std::vector<Statment> _stmts;
-		std::map<std::string, std::pair<CounterType, size_t>> _symbols;
 		std::optional<std::string> _exceptionFile;
 
 		bool isFileOpen()
@@ -33,7 +26,6 @@ namespace Assembler
 		AsmFileReader(const std::string& filePath)
 			: _filePath(filePath)
 		{
-
 		}
 
 		~AsmFileReader()
@@ -46,7 +38,6 @@ namespace Assembler
 			try
 			{
 				_file.open(_filePath);
-
 				if (!isFileOpen())
 					throw AssemblerExceptionUnableOpen();
 			} 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Statment.hpp"
 #include "Symbol.hpp"
+#include "SymbolPool.hpp"
 
 namespace Tester
 {
@@ -8,6 +9,7 @@ namespace Tester
 	{
 		TEST(StatmentLenOver80, StatmentTesterLen)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt("aasdasdfasfsdfsdfsdfsdfsfdsfdsfaaaaaasdasdfasfsdfsdfsdfsdfsfdsfdsfaaaaaaavsdfgssa");
 			stmt.parse();
 
@@ -16,6 +18,7 @@ namespace Tester
 
 		TEST(SymbolTestGood, StatmentTester)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  SYMBOL  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -24,6 +27,7 @@ namespace Tester
 
 		TEST(SymbolTestStartWithNum, StatmentTesterSyntax)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  7YMBOL  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -32,6 +36,7 @@ namespace Tester
 
 		TEST(SymbolTestOver31, StatmentTesterSyntax)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  SYMBOLSYMBOLSYMBOLSYMBOLSYMBOLLL  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -40,6 +45,7 @@ namespace Tester
 
 		TEST(SymbolTestGoodShort, StatmentTesterSyntax)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  x  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -48,6 +54,7 @@ namespace Tester
 
 		TEST(SymbolTestGoodLong, StatmentTesterSyntax)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  SYMBOLSYMBOLSYMBOLSYMBOLSYMBOLx  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -56,6 +63,7 @@ namespace Tester
 		
 		TEST(SymbolTestSavedName1, StatmentTesterSavedNames)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  r0  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -64,6 +72,7 @@ namespace Tester
 
 		TEST(SymbolTestSavedName2, StatmentTesterSavedNames)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  @r0  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -72,6 +81,7 @@ namespace Tester
 
 		TEST(SymbolTestSavedName3, StatmentTesterSavedNames)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  mov  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -80,6 +90,7 @@ namespace Tester
 
 		TEST(SymbolTestSavedName4, StatmentTesterSavedNames)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t  dec  \t : \t\t mov -103 \t, \t @r2 \t \t");
 			stmt.parse();
 
@@ -88,6 +99,7 @@ namespace Tester
 
 		TEST(SymbolTestWithoutSymbol, StatmentTesterSavedNames)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t    \t  \t\t .data -103 \t, \t 15 \t , 2\t");
 			stmt.parse();
 
@@ -96,6 +108,7 @@ namespace Tester
 
 		TEST(SymbolTestUnknownCommand, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t    \t SYMBOL: \tdt\t  \t \t  \t \t");
 			stmt.parse();
 
@@ -104,6 +117,7 @@ namespace Tester
 
 		TEST(SymbolTestUnknownSymbol, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t    \t : \tdt\t  \t \t  \t \t");
 			stmt.parse();
 
@@ -112,6 +126,7 @@ namespace Tester
 
 		TEST(SymbolTestUnknownCommand3, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt(" \t \t    \t  \tdt\t  \t \t  \t \t");
 			stmt.parse();
 
@@ -120,6 +135,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    , \t 15 ");
 			stmt2.parse();
 
@@ -128,6 +144,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData2, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t. data\t  \t6  \t , \t -9    , \t 15 ");
 			stmt2.parse();
 
@@ -136,6 +153,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData3, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t  \t  \t      \t 15 ");
 			stmt2.parse();
 
@@ -144,6 +162,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData4, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t  \t  \t      \t  ");
 			stmt2.parse();
 
@@ -152,6 +171,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData5, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    , \t 15      ; comment ");
 			stmt2.parse();
 
@@ -160,6 +180,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData6, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    ; comment, \t 15 ");
 			stmt2.parse();
 
@@ -168,6 +189,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData7, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t ,, \t -9    ,; comment \t 15 ");
 			stmt2.parse();
 
@@ -176,6 +198,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData8, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t6  \t , \t -9    ,; comment \t 15 ");
 			stmt2.parse();
 
@@ -184,6 +207,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData9, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t-6  \t , \t -9 , +15   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -192,6 +216,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData10, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t-6  \t , \t -9 , +15-   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -200,6 +225,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData11, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t-6  \t , \t -9- , +15   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -208,6 +234,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData12, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  \t  \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -216,6 +243,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData13, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  ,\t  \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -224,6 +252,7 @@ namespace Tester
 
 		TEST(StatmentSymbolData14, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.data\t  6,\t  \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -232,6 +261,7 @@ namespace Tester
 
 		TEST(StatmentSymbolString, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t  \t  \t \"abcdef\"   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -241,6 +271,7 @@ namespace Tester
 
 		TEST(StatmentSymbolString1, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t\"  \t  \t \"abcdef\"   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -249,6 +280,7 @@ namespace Tester
 
 		TEST(StatmentSymbolString2, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t  \t  \t \"abcdef\" \"as\"   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -257,6 +289,7 @@ namespace Tester
 
 		TEST(StatmentSymbolString3, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t ;  \t  \t \"abcdef\"   ; comment \t 15 ");
 			stmt2.parse();
 
@@ -265,6 +298,7 @@ namespace Tester
 
 		TEST(StatmentSymbolString4, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.string\t  \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -273,6 +307,7 @@ namespace Tester
 
 		TEST(StatmentSymbolEntry, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -284,6 +319,7 @@ namespace Tester
 
 		TEST(StatmentSymbolEntryException1, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO \t \td  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -292,6 +328,7 @@ namespace Tester
 
 		TEST(StatmentSymbolEntryException2, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO@ \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -300,6 +337,7 @@ namespace Tester
 
 		TEST(StatmentSymbolExtern, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.extern\t  HELLO \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -311,6 +349,7 @@ namespace Tester
 
 		TEST(StatmentSymbolExternException1, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.entry\t  HELLO \t \td  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -319,6 +358,7 @@ namespace Tester
 
 		TEST(StatmentSymbolExternException2, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.extern\t  HELLO@ \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -327,6 +367,7 @@ namespace Tester
 		
 		TEST(StatmentSymbolExternException3, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t. extern\t  HELLO@ \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -335,6 +376,7 @@ namespace Tester
 
 		TEST(StatmentSymbolExternException4, StatmentTesterComamands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t STR \t :   \t  \t.extern\t   \t \t  \t    ; comment \t 15 ");
 			stmt2.parse();
 
@@ -343,6 +385,7 @@ namespace Tester
 
 		TEST(StatmentMov1, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  mov \t51\t ,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -352,6 +395,7 @@ namespace Tester
 
 		TEST(StatmentMov2, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  mov \t-51\t ,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -361,6 +405,7 @@ namespace Tester
 
 		TEST(StatmentMov3, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -370,6 +415,7 @@ namespace Tester
 
 		TEST(StatmentMovException1, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -378,6 +424,7 @@ namespace Tester
 
 		TEST(StatmentMovException2, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,  \t @r24\t  \t     \t  ");
 			stmt2.parse();
 
@@ -386,6 +433,7 @@ namespace Tester
 
 		TEST(StatmentMovException3, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  mov \t@r2\t ,  \t 1\t  \t     \t  ");
 			stmt2.parse();
 
@@ -394,6 +442,7 @@ namespace Tester
 
 		TEST(StatmentCmp1, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  cmp \t51\t ,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -403,6 +452,7 @@ namespace Tester
 
 		TEST(StatmentCmp2, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  cmp \t51\t ,  \t-3\t  \t     \t  ");
 			stmt2.parse();
 
@@ -412,6 +462,7 @@ namespace Tester
 
 		TEST(StatmentAdd1, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  add \t51\t ,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -421,6 +472,7 @@ namespace Tester
 
 		TEST(StatmentSub1, Command2Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  sub \t51\t ,  \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -430,6 +482,7 @@ namespace Tester
 
 		TEST(StatmentNot1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  not \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -439,6 +492,7 @@ namespace Tester
 
 		TEST(StatmentClr1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  clr \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -448,6 +502,7 @@ namespace Tester
 
 		TEST(StatmentInc1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  inc \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -457,6 +512,7 @@ namespace Tester
 
 		TEST(StatmentDec1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  dec \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -466,6 +522,7 @@ namespace Tester
 
 		TEST(StatmentJmp1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  jmp \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -475,6 +532,7 @@ namespace Tester
 
 		TEST(StatmentBne1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  bne \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -484,6 +542,7 @@ namespace Tester
 
 		TEST(StatmentRed1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  red \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -493,6 +552,7 @@ namespace Tester
 
 		TEST(StatmentPrn1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  prn \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -502,6 +562,7 @@ namespace Tester
 
 		TEST(StatmentPrn2, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  prn \t\t \t 51\t  \t     \t  ");
 			stmt2.parse();
 
@@ -511,6 +572,7 @@ namespace Tester
 
 		TEST(StatmentJsr, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t @r4\t  \t     \t  ");
 			stmt2.parse();
 
@@ -520,6 +582,7 @@ namespace Tester
 
 		TEST(StatmentJsrException1, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t @r4\t , \t     \t  ");
 			stmt2.parse();
 
@@ -528,6 +591,7 @@ namespace Tester
 
 		TEST(StatmentJsrException2, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t -5\t  \t     \t  ");
 			stmt2.parse();
 
@@ -536,6 +600,7 @@ namespace Tester
 
 		TEST(StatmentJsrException3, Command1Operands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  jsr \t\t \t \t  \t     \t  ");
 			stmt2.parse();
 
@@ -544,6 +609,7 @@ namespace Tester
 
 		TEST(StatmentRts, CommandNoOperands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  rts \t\t \t \t  \t     \t  ");
 			stmt2.parse();
 
@@ -553,6 +619,7 @@ namespace Tester
 
 		TEST(StatmentStop, CommandNoOperands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  stop \t\t \t \t  \t     \t  ");
 			stmt2.parse();
 
@@ -562,6 +629,7 @@ namespace Tester
 
 		TEST(StatmentStopException, CommandNoOperands)
 		{
+			Assembler::SymbolPool::Instance().clear();
 			Assembler::Statment stmt2(" \t  \t    \t  stop \t\t @r4\t \t  \t     \t  ");
 			stmt2.parse();
 

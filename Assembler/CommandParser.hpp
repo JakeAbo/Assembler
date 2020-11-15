@@ -64,7 +64,7 @@ namespace Assembler
 			if (!std::regex_match(tokens[0], std::regex(AssemblerTypes::REGEX_SYMBOL_VALIDATE)))
 				throw AssemblerExceptionInvalidArgument();
 
-			return Symbol(tokens[0], SymbolType::ENTRY, -1);
+			return Symbol(tokens[0], SymbolType::ENTRY, std::nullopt);
 		}
 
 		static Symbol parseExternInstruction(std::vector<std::string> tokens)
@@ -79,7 +79,7 @@ namespace Assembler
 			if (!std::regex_match(tokens[0], std::regex(AssemblerTypes::REGEX_SYMBOL_VALIDATE)))
 				throw AssemblerExceptionInvalidArgument();
 
-			return Symbol(tokens[0], SymbolType::EXTERN, -1);
+			return Symbol(tokens[0], SymbolType::EXTERN, 0);
 		}
 
 		static Command parse2OperandOperation(std::vector<std::string> tokens)

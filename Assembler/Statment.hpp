@@ -12,15 +12,15 @@
 #include "StringUtility.hpp"
 #include "CommandParser.hpp"
 #include "Symbol.hpp"
+#include "SymbolPool.hpp"
 
 namespace Assembler
 {
 	class Statment
 	{
 	private:
-		std::variant<Command, Symbol> _result;
+		std::variant<std::monostate, Command, Symbol> _result;
 		std::string _asmStmt;
-		std::optional<Command> _cmd;
 		std::optional<std::string> _symbol;
 		std::optional<std::string> _exception;
 
@@ -77,7 +77,7 @@ namespace Assembler
 	
 		void parseCommand(const std::vector<std::string>& tokens)
 		{
-			typedef std::function<std::variant<Command, Symbol>(const std::vector<std::string>&)> instructionFunctor;
+			typedef std::function<std::variant<std::monostate, Command, Symbol>(const std::vector<std::string>&)> instructionFunctor;
 			static std::map<std::string, instructionFunctor> commandParsers;
 			if(commandParsers.empty())
 			{
@@ -122,10 +122,42 @@ namespace Assembler
 			try
 			{
 				_result = commandParsers.at(tokens[0])(tokens);
+				if (_result.index() == 1) /* Data Command and has symbol */
+				{
+					if (_symbol.has_value())
+					{
+						size_t currIc = SymbolPool::Instance().getIc();
+						SymbolPool::Instance().addIc(std::get<Command>(_result).getNumberOfWords());
+						if (tokens[0] == ".data" || tokens[0] == ".string")
+						{
+							if (!SymbolPool::Instance().addSymbol(_symbol.value(), SymbolType::DATA, currIc))
+							{
+								throw AssemblerExceptionSymbolAlreadyExists();
+							}
+						}
+						else
+						{
+							if (!SymbolPool::Instance().addSymbol(_symbol.value(), SymbolType::CODE, currIc))
+							{
+								throw AssemblerExceptionSymbolAlreadyExists();
+							}
+						}
+					}
+					else
+					{
+						SymbolPool::Instance().addIc(std::get<Command>(_result).getNumberOfWords());
+					}
+				}
+				if (_result.index() == 2)
+				{
+					const auto& s = std::get<Symbol>(_result);
+					SymbolPool::Instance().addSymbolEntryOrExtern(s.getName(), s.getType(), s.getCommandNumber());
+				}
 			} 
 			catch (const AssemblerException & ex)
 			{
 				_exception = ex.what();
+				_result = {};
 				return;
 			}
 		}
@@ -209,7 +241,7 @@ namespace Assembler
 
 		bool isEmptyOrComment()
 		{
-			return !_cmd.has_value();
+			return _result.index() == 0;
 		}
 	};
 }
