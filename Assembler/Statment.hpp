@@ -162,6 +162,22 @@ namespace Assembler
 			}
 		}
 
+		friend BinaryStream& operator<<(BinaryStream& os, const Statment& stmt)
+		{
+			if(stmt._result.index() == 1)
+				os << std::get<Command>(stmt._result);
+			
+			return os;
+		}
+
+		friend Base64Stream& operator<<(Base64Stream& os, const Statment& stmt)
+		{
+			if (stmt._result.index() == 1)
+				os << std::get<Command>(stmt._result);
+
+			return os;
+		}
+
 	public:
 		Statment(const std::string asmStmt)
 			: _asmStmt(asmStmt)
@@ -203,6 +219,12 @@ namespace Assembler
 			{
 				_exception = ex.what();
 			}
+		}
+
+		void updateSymbols()
+		{
+			if (_result.index() == 1)
+				std::get<Command>(_result).updateSymbols();
 		}
 
 		const std::optional<std::string>& getSymbol()

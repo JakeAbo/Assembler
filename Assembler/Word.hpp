@@ -28,6 +28,16 @@ namespace Assembler
 			return *this;
 		}
 
+		bool isSymbol()
+		{
+			return _symbol.has_value();
+		} const
+
+		std::optional<std::string> getSymbol()
+		{
+			return _symbol;
+		}
+
 		const std::string getBinaryString() const 
 		{
 			return _bits.to_string();
@@ -65,7 +75,19 @@ namespace Assembler
 			_symbol = symbol;
 			return *this;
 		}
+		Word& setSymbol(size_t num)
+		{
+			size_t i;
+			std::bitset<AssemblerTypes::SYMBOL_SIZE> opBits(static_cast<unsigned int>(num));
 
+			for (i = 0; i < AssemblerTypes::SYMBOL_SIZE; ++i)
+			{
+				_bits.set(i + AssemblerTypes::CODE_NUMBER_CHAR_0, opBits[i]);
+			}
+
+			return *this;
+		}
+		
 		/* Code Type */
 		Word& setAbsolute()
 		{
@@ -227,8 +249,9 @@ namespace Assembler
 		}
 
 		/* Set Number in word */
-		Word& setNumber(int num)
+		Word& setNumberCode(int num)
 		{
+			setAbsolute();
 			if (num < AssemblerTypes::NUMBER_MIN_VALUE || num > AssemblerTypes::NUMBER_MAX_VALUE)
 				throw AssemblerExceptionOverflow();
 
@@ -237,16 +260,37 @@ namespace Assembler
 
 			for (i = 0; i < AssemblerTypes::NUMBER_SIZE; ++i)
 			{
-				_bits.set(i + AssemblerTypes::NUMBER_0, opBits[i]);
+				_bits.set(i + AssemblerTypes::CODE_NUMBER_CHAR_0, opBits[i]);
+			}
+
+			return *this;
+		}
+
+		Word& setAsciiCode(char c)
+		{
+			return setNumberCode(static_cast<int>(c));
+		}
+		
+		Word& setNumberData(int num)
+		{
+			if (num < AssemblerTypes::NUMBER_MIN_VALUE || num > AssemblerTypes::NUMBER_MAX_VALUE)
+				throw AssemblerExceptionOverflow();
+
+			size_t i;
+			std::bitset<AssemblerTypes::WORD_SIZE> opBits(static_cast<int>(num));
+
+			for (i = 0; i < AssemblerTypes::WORD_SIZE; ++i)
+			{
+				_bits.set(i + AssemblerTypes::DATA_NUMBER_CHAR_0, opBits[i]);
 			}
 
 			return *this;
 		}
 
 		/* Set Asci in word */
-		Word& setAscii(char c)
+		Word& setAsciiData(char c)
 		{
-			return setNumber(static_cast<int>(c));
+			return setNumberData(static_cast<int>(c));
 		}
 
 		/* Set Register */

@@ -6,6 +6,7 @@
 
 #include "Word.hpp"
 #include "AssemblerStreams.hpp"
+#include "SymbolPool.hpp"
 
 namespace Assembler
 {
@@ -32,6 +33,22 @@ namespace Assembler
 		void addWords(std::initializer_list<Word> words)
 		{
 			_words.insert(_words.end(), words);
+		}
+
+		void updateSymbols()
+		{
+			for (auto& w : _words)
+			{
+				if (w.isSymbol())
+				{
+					auto sym = SymbolPool::Instance().getSymbol(w.getSymbol().value());
+					w.setSymbol(sym.value().getCommandNumber().value());
+					if (sym.value().getType() == SymbolType::EXTERN)
+						w.setExternal();
+					else
+						w.setRelocatable();
+				}
+			}
 		}
 
 		friend BinaryStream& operator<<(BinaryStream& os, const Command& cmd)

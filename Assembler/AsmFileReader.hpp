@@ -64,11 +64,31 @@ namespace Assembler
 				}
 
 				//Second iterate - update symbols according to symbol table
+				for (auto& s : _stmts)
+				{
+					s.updateSymbols();
+				}
 			}
 			catch (const AssemblerException & ex)
 			{
 				_exceptionFile = ex.what();
 			}
+		}
+
+		friend BinaryStream& operator<<(BinaryStream& os, const AsmFileReader& file)
+		{
+			for (const auto& s : file._stmts)
+				os << s;
+
+			return os;
+		}
+
+		friend Base64Stream& operator<<(Base64Stream& os, const AsmFileReader& file)
+		{
+			for (const auto& s : file._stmts)
+				os << s;
+
+			return os;
 		}
 
 		const std::optional<std::string>& getException()

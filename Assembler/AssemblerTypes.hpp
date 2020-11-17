@@ -30,7 +30,9 @@ namespace Assembler
 
 		/* Word Properties */
 		static constexpr auto WORD_SIZE = 12;
-		static constexpr auto NUMBER_SIZE = 12;
+		static constexpr auto NUMBER_SIZE = 10;
+		static constexpr auto CHAR_SIZE = 12;
+		static constexpr auto SYMBOL_SIZE = 10;
 		static constexpr auto CODE_SIZE = 2;
 		static constexpr auto OP_CODE_SIZE = 4;
 		static constexpr auto OPERNAD_LBA_SIZE = 3;
@@ -55,8 +57,13 @@ namespace Assembler
 		static constexpr auto SRC_TYPE_2 = 11;
 
 		/* Second or Third Word */
+		/* Data char and number */
+		static constexpr auto DATA_NUMBER_CHAR_0 = 0;
+
+		/*Code char and number */
+		static constexpr auto CODE_NUMBER_CHAR_0 = 2;
+
 		/* Number */
-		static constexpr auto NUMBER_0 = 0;
 		static constexpr auto NUMBER_MIN_VALUE = -4095;
 		static constexpr auto NUMBER_MAX_VALUE = 4095;
 

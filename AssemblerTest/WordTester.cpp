@@ -187,28 +187,28 @@ namespace Tester
 
 		TEST(Positive, WordNumber)
 		{
-			w.clear().setAbsolute().setNumber(312);
+			w.clear().setAbsolute().setNumberData(312);
 
 			EXPECT_EQ(w.getBinaryString(), "000100111000");
 		}
 
 		TEST(Negative, WordNumber)
 		{
-			w.clear().setAbsolute().setNumber(-312);
+			w.clear().setAbsolute().setNumberData(-312);
 
 			EXPECT_EQ(w.getBinaryString(), "111011001000");
 		}
 
 		TEST(MaxPositive, WordNumber)
 		{
-			w.clear().setAbsolute().setNumber(4095);
+			w.clear().setAbsolute().setNumberData(4095);
 
 			EXPECT_EQ(w.getBinaryString(), "111111111111");
 		}
 
 		TEST(MinNegative, WordNumber)
 		{
-			w.clear().setAbsolute().setNumber(-4095);
+			w.clear().setAbsolute().setNumberData(-4095);
 
 			EXPECT_EQ(w.getBinaryString(), "000000000001");
 		}
@@ -217,7 +217,7 @@ namespace Tester
 		{
 			try
 			{
-				w.clear().setAbsolute().setNumber(-1029);
+				w.clear().setAbsolute().setNumberData(-1029);
 			}
 			catch (const Assembler::AssemblerException & ex)
 			{
@@ -229,7 +229,7 @@ namespace Tester
 		{
 			try
 			{
-				w.clear().setAbsolute().setNumber(1029);
+				w.clear().setAbsolute().setNumberData(1029);
 			}
 			catch (const Assembler::AssemblerException & ex)
 			{

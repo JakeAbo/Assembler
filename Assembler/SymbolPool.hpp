@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <optional>
 #include "Symbol.hpp"
@@ -10,12 +11,12 @@ namespace Assembler
 	class SymbolPool 
 	{
 	private:
-		std::map<std::string, Symbol> _symbols;
+		std::unordered_map<std::string, Symbol> _symbols;
 		size_t _ic;
 		size_t _dc;
 
 		SymbolPool()
-			:_ic(0), _dc(0)
+			:_ic(100), _dc(100)
 		{}
 
 	public:
@@ -108,7 +109,7 @@ namespace Assembler
 		void clear()
 		{
 			_symbols.clear();
-			_ic = _dc = 0;
+			_ic = _dc = 100;
 		}
 	};
 }

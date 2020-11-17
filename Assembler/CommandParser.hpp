@@ -25,7 +25,7 @@ namespace Assembler
 			Command cmd;
 
 			std::for_each(res.begin(), res.end(), [&cmd](int element) {
-				cmd.addWord(std::move(Word().setNumber(element)));
+				cmd.addWord(std::move(Word().setNumberData(element)));
 				});
 
 			return std::move(cmd);
@@ -44,10 +44,10 @@ namespace Assembler
 			Command cmd;
 
 			std::for_each(tokens[1].begin(), tokens[1].end(), [&cmd](char element) {
-				cmd.addWord(std::move(Word().setAscii(element)));
+				cmd.addWord(std::move(Word().setAsciiData(element)));
 				});
 
-			cmd.addWord(std::move(Word().setAscii('\0')));
+			cmd.addWord(std::move(Word().setAsciiData('\0')));
 
 			return std::move(cmd);
 		}
@@ -123,7 +123,7 @@ namespace Assembler
 					opt.setSourceImmediate();
 					try
 					{
-						opr1.setAbsolute().setNumber(std::stoi(tokens[0]));
+						opr1.setAbsolute().setNumberCode(std::stoi(tokens[0]));
 					} 
 					catch (const std::invalid_argument&)
 					{
@@ -164,7 +164,7 @@ namespace Assembler
 					opt.setDestinationImmediate();
 					try
 					{
-						opr2.setAbsolute().setNumber(std::stoi(tokens[1]));
+						opr2.setAbsolute().setNumberCode(std::stoi(tokens[1]));
 					}
 					catch (const std::invalid_argument&)
 					{
@@ -224,7 +224,7 @@ namespace Assembler
 					opt.setDestinationImmediate();
 					try
 					{
-						opr1.setAbsolute().setNumber(std::stoi(tokens[0]));
+						opr1.setAbsolute().setNumberCode(std::stoi(tokens[0]));
 					}
 					catch (const std::invalid_argument&)
 					{

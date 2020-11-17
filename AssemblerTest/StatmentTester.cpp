@@ -390,7 +390,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("001000010100\n000000110011\n000000010000\n"));
+				std::string("001000010100\n000011001100\n000000010000\n"));
 		}
 
 		TEST(StatmentMov2, Command2Operands)
@@ -400,7 +400,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("001000010100\n111111001101\n000000010000\n"));
+				std::string("001000010100\n111100110100\n000000010000\n"));
 		}
 
 		TEST(StatmentMov3, Command2Operands)
@@ -447,7 +447,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("001000110100\n000000110011\n000000010000\n"));
+				std::string("001000110100\n000011001100\n000000010000\n"));
 		}
 
 		TEST(StatmentCmp2, Command2Operands)
@@ -457,7 +457,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("001000100100\n000000110011\n111111111101\n"));
+				std::string("001000100100\n000011001100\n111111110100\n"));
 		}
 
 		TEST(StatmentAdd1, Command2Operands)
@@ -467,7 +467,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("001001010100\n000000110011\n000000010000\n"));
+				std::string("001001010100\n000011001100\n000000010000\n"));
 		}
 
 		TEST(StatmentSub1, Command2Operands)
@@ -477,7 +477,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("001001110100\n000000110011\n000000010000\n"));
+				std::string("001001110100\n000011001100\n000000010000\n"));
 		}
 
 		TEST(StatmentNot1, Command1Operands)
@@ -567,7 +567,7 @@ namespace Tester
 			stmt2.parse();
 
 			EXPECT_EQ(stmt2.getCommand().value().getBinaryCommand(),
-				std::string("000110000100\n000000110011\n"));
+				std::string("000110000100\n000011001100\n"));
 		}
 
 		TEST(StatmentJsr, Command1Operands)
